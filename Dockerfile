@@ -25,6 +25,7 @@ FROM nvidia/cuda:10.1-base-ubuntu16.04
 
 # Install some basic utilities
 RUN apt-get update && apt-get install -y \
+    build-essential \
     curl \
     ca-certificates \
     sudo \
@@ -94,6 +95,13 @@ RUN sudo apt-get update && sudo apt-get install -y --no-install-recommends \
  && sudo rm -rf /var/lib/apt/lists/*
 RUN conda install -y -c conda-forge opencv=3.4.4 \
  && conda clean -ya
+
+# My Custom installation
+RUN conda install cython numba progress matplotlib scipy \
+ && conda clean -ya
+
+RUN pip install easydict==1.9
+RUN pip install -U 'git+https://github.com/cocodataset/cocoapi.git#subdirectory=PythonAPI'
 
 # Set the default command to python3
 CMD ["python3"]
